@@ -38,6 +38,7 @@ app.post('/messages', (req, res) => {
   })
 })
 
+//was able to make this work with Justin and Fadma
 app.put('/messages', (req, res) => {
   let oper
   if(Object.keys(req.body)[2] == 'thumbUp'){
