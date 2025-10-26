@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient
 
 var db, collection;
 
-const url = "mongodb+srv://demo:demo@cluster0-q2ojb.mongodb.net/test?retryWrites=true";
+const url = "mongodb+srv://ishelvirakeira_db_user:UA9tfjBS5RFgw3Ht@cluster0.vnt1rh6.mongodb.net/?appName=Cluster0";
 const dbName = "demo";
 
 app.listen(3000, () => {
@@ -39,10 +39,17 @@ app.post('/messages', (req, res) => {
 })
 
 app.put('/messages', (req, res) => {
+  let oper
+  if(Object.keys(req.body)[2] == 'thumbUp'){
+    oper = req.body.thumbUp + 1
+  } else if(Object.keys(req.body)[2] == 'thumbDown'){
+    oper = req.body.thumbDown - 1
+  }
   db.collection('messages')
   .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
     $set: {
-      thumbUp:req.body.thumbUp + 1
+      thumbUp: oper
+      //thumbUp:req.body.thumbUp + 1
     }
   }, {
     sort: {_id: -1},
