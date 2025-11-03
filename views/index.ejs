@@ -2,39 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>21 Savage Fans</title>
-  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Board</title>
   <link rel="stylesheet" href="font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>21 Savage</h1>
-  <h2>Why you trappin so hard?</h2>
+  <h1>Recipe Board</h1>
+  <h2>Share your favorite recipes</h2>
 
-
-  <h3>Messages</h3>
-  <ul class="messages">
-  <% for(var i=0; i<messages.length; i++) {%>
-    <li class="message">
-      <span><%= messages[i].name %></span>
-      <span><%= messages[i].msg %></span>
-      <span><%= messages[i].thumbUp %></span>
-      <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-      <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-      <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-    </li>
-  <% } %>
+  <!-- List of Recipes -->
+  <h3>Recipes</h3>
+  <ul class="recipes">
+    <% recipes.forEach(function(recipe) { %>
+      <li class="recipe">
+        <span class="title"><%= recipe.title %></span><br>
+        <span>Ingredients: <%= recipe.ingredients.join(', ') %></span><br>
+        <span>Instructions: <%= recipe.instructions %></span><br>
+        <span class="likescount"><%= recipe.likes %></span>
+        <span>
+          <i class="fa fa-heart fa-like-btn" aria-hidden="true"></i> Like
+        </span>
+        <span>
+          <i class="fa fa-trash" aria-hidden="true"></i> Delete
+        </span>
+      </li>
+    <% }) %>
   </ul>
 
-  <h2>Add a message</h2>
-
-  <form action="/messages" method="POST">
-    <input type="text" placeholder="name" name="name">
-    <input type="text" placeholder="message" name="msg">
-    <button type="submit">Submit</button>
+  <!-- Add Recipe Form -->
+  <h2>Add a Recipe</h2>
+  <form action="/recipes" method="POST">
+    <input type="text" placeholder="Dish name" name="title" >
+    <input type="text" placeholder="Ingredients (comma separated)" name="ingredients">
+    <textarea placeholder="Instructions" name="instructions"></textarea>
+    <button type="submit">Add Recipe</button>
   </form>
 
   <script src="main.js"></script>
-
 </body>
 </html>

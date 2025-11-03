@@ -1,69 +1,84 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const MongoClient = require('mongodb').MongoClient
+// Import required modules
+const express = require('express');
+const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
 
-var db, collection;
+const app = express();
 
-const url = "mongodb+srv://ishelvirakeira_db_user:UA9tfjBS5RFgw3Ht@cluster0.vnt1rh6.mongodb.net/?appName=Cluster0";
+// MongoDB connection string
+const url = "mongodb+srv://ishelvirakeira_db_user:IA3Wdv8dvZ8w1HTl@cluster0.vnt1rh6.mongodb.net/?appName=Cluster0";
 const dbName = "demo";
 
-app.listen(3000, () => {
-    MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
-        if(error) {
-            throw error;
-        }
-        db = client.db(dbName);
-        console.log("Connected to `" + dbName + "`!");
+let db;
+
+// Middleware
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// Connect to MongoDB and start server
+MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
+    if (error) throw error;
+
+    db = client.db(dbName);
+    console.log(`Connected to database "${dbName}"`);
+
+    app.listen(2000, () => {
+        console.log('Server running on port 2000');
     });
 });
 
-app.set('view engine', 'ejs')
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-app.use(express.static('public'))
+// -----------------------------
+// ROUTES
+// -----------------------------
 
+// READ - show all recipes
 app.get('/', (req, res) => {
-  db.collection('messages').find().toArray((err, result) => {
-    if (err) return console.log(err)
-    res.render('index.ejs', {messages: result})
-  })
-})
+    db.collection('recipes').find().toArray((err, result) => {
+        if (err) return console.log(err);
+        res.render('index.ejs', { recipes: result });
+    });
+});
 
-app.post('/messages', (req, res) => {
-  db.collection('messages').insertOne({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
-    if (err) return console.log(err)
-    console.log('saved to database')
-    res.redirect('/')
-  })
-})
+// CREATE - add a new recipe
+app.post('/recipes', (req, res) => {
+    db.collection('recipes').insertOne({
+        title: req.body.title,
+        ingredients: req.body.ingredients.split(','),
+        instructions: req.body.instructions,
+        likes: 0
+    }, (err, result) => {
+        if (err) return console.log(err);
+        console.log('Recipe saved to database');
+        res.redirect('/');
+    });
+});
 
-//was able to make this work with Justin and Fadma
-app.put('/messages', (req, res) => {
-  let oper
-  if(Object.keys(req.body)[2] == 'thumbUp'){
-    oper = req.body.thumbUp + 1
-  } else if(Object.keys(req.body)[2] == 'thumbDown'){
-    oper = req.body.thumbDown - 1
-  }
-  db.collection('messages')
-  .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-    $set: {
-      thumbUp: oper
-      //thumbUp:req.body.thumbUp + 1
-    }
-  }, {
-    sort: {_id: -1},
-    upsert: true
-  }, (err, result) => {
-    if (err) return res.send(err)
-    res.send(result)
-  })
-})
+// UPDATE - increment likes
+app.put('/recipes', (req, res) => {
+    db.collection('recipes')
+    .findOneAndUpdate(
+        { title: req.body.title },       // find recipe by title
+        { $inc: { likes: 1 } },          // increment likes by 1
+        { returnDocument: 'after' }      // return updated document
+    )
+    .then(result => {
+        if (!result.value) {
+            return res.json({ error: 'Recipe not found' });
+        }
+        res.json(result.value);          // return updated recipe
+    })
+    .catch(err => res.json({ error: err }));
+});
 
-app.delete('/messages', (req, res) => {
-  db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
-    if (err) return res.send(500, err)
-    res.send('Message deleted!')
-  })
-})
+// DELETE - remove recipe by title
+app.delete('/recipes', (req, res) => {
+    db.collection('recipes').findOneAndDelete({ title: req.body.title }, (err, result) => {
+        if (err) return res.send(500, err);
+        if (!result.value) {
+            return res.json('No recipe to delete');
+        }
+        res.json('Recipe deleted!');
+    });
+});

@@ -1,6 +1,141 @@
-body{
-  background: red;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
-h3{
-  margin-top: 40px;
+
+
+body {
+  background-color: lavenderblush;
+  color: darkslategray;
+  padding: 2rem;
 }
+
+h1 {
+  text-align: center;
+  color: darkred;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  text-align: center;
+  color: darkmagenta;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: darkgreen;
+}
+
+
+.recipes {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recipe {
+  background-color: rgb(160, 111, 105);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid lightcoral;
+  box-shadow: 2px 2px 5px lightgray;
+}
+
+.recipe .title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: darkred;
+}
+
+.recipe span {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+.recipe .likescount {
+  font-weight: bold;
+  color: darkblue;
+  margin-right: 0.5rem;
+}
+
+.fa-like-btn {
+  color: rgb(212, 120, 139);
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.fa-like-btn:hover {
+  transform: scale(1.2);
+}
+
+.fa-trash {
+  color: darkred;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: transform 0.2s;
+}
+
+.fa-trash:hover {
+  transform: scale(1.2);
+}
+
+
+form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input, textarea {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid gray;
+  width: 100%;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button[type="submit"] {
+  background-color: darkmagenta;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: purple;
+  transform: scale(1.05);
+}
+
+/*responsiveness */
+@media (max-width: 600px) {
+  .recipes {
+    gap: 0.5rem;
+  }
+  
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+}
+
