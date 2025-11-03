@@ -1,11 +1,17 @@
-![21 Savage](public/21savage.jpg)
+This is a full-stack web application for sharing and managing recipes. Users can view a list of recipes, add new recipes with ingredients and instructions, like recipes, and delete them. This project demonstrates working with MongoDB, EJS templates, and dynamic content rendering in a clean, interactive frontend.
 
-## Installation
+<img width="929" height="464" alt="recipe" src="https://github.com/user-attachments/assets/bcdfb887-e027-4f5f-ba15-26919c50486b" />
 
-1. Clone repo
-2. run `npm install`
+Lessons Learned:
 
-## Usage
+How to structure a full-stack web app with Node.js, Express, and MongoDB.
 
-1. run `npm run savage`
-2. Navigate to `localhost:3000`
+Working with EJS templates to render dynamic content on the frontend.
+
+Managing user interactions like adding, liking, and deleting items.
+
+Connecting backend data models (MongoDB) with frontend views.
+
+Writing clean, maintainable CSS for layout and styling.
+
+Understanding basic CRUD operations in a web application context.
