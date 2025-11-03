@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient;
 const app = express();
 
 // MongoDB connection string
-const url = "mongodb+srv://ishelvirakeira_db_user:IA3Wdv8dvZ8w1HTl@cluster0.vnt1rh6.mongodb.net/?appName=Cluster0";
+const url = "mongodb+srv://ishelvirakeira_db_user:QjtwX7dDGqX9Ivk9@cluster0.vnt1rh6.mongodb.net/favorite-recipe";
 const dbName = "demo";
 
 let db;
